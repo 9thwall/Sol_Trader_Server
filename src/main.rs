@@ -6,10 +6,10 @@ mod config;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    dotenv::from_path(".env").ok();
-    //dotenv::from_path("/etc/solana-tracker/.env").ok();
+    //dotenv::from_path(".env").ok();
+    dotenv::from_path("/etc/solana-tracker/.env").ok();
     
-    //pyth_tracker::run_pyth_tracker().await?;
+    pyth_tracker::run_pyth_tracker().await?;
 
     // if let Err(e) = s3_uploader::update_s3_history().await {
     //     eprintln!("Upload failed: {e}");
