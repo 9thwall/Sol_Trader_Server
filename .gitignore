@@ -1,0 +1,32 @@
+# Rust build artifacts
+/target/
+**/*.rs.bk
+
+# IDEs and editors
+/.idea/
+/.vscode/
+/*.swp
+*.sublime-workspace
+*.sublime-project
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+/logs/
+
+# Local env/config
+.env
+.env.*
+
+# AWS credentials or local secrets
+*.pem
+*.key
+*.crt
+
+# Misc
+*.bak
+*.tmp
+*.old
