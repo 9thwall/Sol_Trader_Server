@@ -1,9 +1,14 @@
+use std::env;
 use eventsource_client as es;
 use eventsource_client::Client;
 use futures_util::StreamExt;
+use once_cell::sync::Lazy;
 use serde_json::{Value};
-use crate::config::SSE_URL;
 use crate::file_utils::update_high_low;
+
+pub static SSE_URL: Lazy<String> = Lazy::new(|| {
+    env::var("SSE_URL").expect("Missing SSE_URL env var")
+});
 
 pub async fn run_pyth_tracker() -> Result<(), Box<dyn std::error::Error>> {
     loop {

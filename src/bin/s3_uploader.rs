@@ -1,17 +1,50 @@
+use std::collections::BTreeMap;
+use std::{env, fs};
+use std::path::Path;
 use aws_config::meta::region::RegionProviderChain;
 use aws_sdk_s3::Client;
+use aws_sdk_s3::primitives::ByteStream;
 use aws_types::region::Region;
 use chrono::{Duration, Utc};
-use serde_json::{Value, Map};
-use std::collections::BTreeMap;
-use std::fs;
-use std::path::Path;
-use aws_sdk_s3::primitives::ByteStream;
-use crate::config::{BUCKET_NAME, FILE_PATH, S3_STORE_MAX_DAYS, AWS_REGION};
+use once_cell::sync::Lazy;
+use serde_json::{Map, Value};
+use solana_tracker::config::FILE_PATH;
+
+
+pub static BUCKET_NAME: Lazy<String> = Lazy::new(|| {
+    env::var("BUCKET_NAME").expect("Missing BUCKET_NAME env var")
+});
+
+pub static S3_STORE_MAX_DAYS: Lazy<i64> = Lazy::new(|| {
+    env::var("S3_STORE_MAX_DAYS")
+        .ok()
+        .and_then(|v| v.parse::<i64>().ok())
+        .unwrap_or(90)
+});
+
+pub static AWS_REGION: Lazy<String> = Lazy::new(|| {
+    env::var("AWS_REGION").unwrap_or_else(|_| "us-west-1".to_string())
+});
+
+
+#[tokio::main]
+async fn main() {
+    dotenv::from_path("/etc/solana-tracker/.env").ok();
+
+    // if let Err(e) = s3_uploader::update_s3_history().await {
+    //     eprintln!("Upload failed: {e}");
+    // }
+
+    match update_s3_history().await {
+        Ok(_) => println!("✅ S3 history successfully uploaded."),
+        Err(e) => eprintln!("❌ S3 upload failed: {e}"),
+    }
+}
+
 
 //This runs right after midnight.
 //So we need to get yesterday's date data.
-pub async fn update_s3_history() -> Result<(), Box<dyn std::error::Error>> {
+async fn update_s3_history() -> Result<(), Box<dyn std::error::Error>> {
     // Step 1: Read the local 5-day file
     if !Path::new(FILE_PATH.as_str()).exists() {
         eprintln!("⚠️ Local high/low file not found.");
@@ -95,5 +128,3 @@ pub async fn update_s3_history() -> Result<(), Box<dyn std::error::Error>> {
     }
     Ok(())
 }
-
-
