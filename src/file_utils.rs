@@ -16,6 +16,10 @@ pub fn update_high_low(current_price: f64) {
     let mut high_time = now_str.clone();
     let mut low_time = now_str.clone();
 
+
+    println!("💰 Current price: {}", current_price);
+    println!("📅 Today: {}", today);
+
     // Load existing JSON if the file exists
     let data = if Path::new(FILE_PATH.as_str()).exists() {
         fs::read_to_string(FILE_PATH.as_str())
@@ -43,8 +47,13 @@ pub fn update_high_low(current_price: f64) {
         }
     }
 
-    // Process today's record if it exists
-    if let Some(Value::Object(obj)) = pruned.get(&today) {
+    // Step 1: Check if today's entry exists
+    let today_entry = pruned.get(&today);
+
+    if today_entry.is_none() {
+        println!("📅 No entry for today. First tick gets inserted.");
+        changed = true;
+    } else if let Some(Value::Object(obj)) = today_entry {
         if let Some(prev_high) = obj.get("high").and_then(|v| v.as_f64()) {
             if current_price > prev_high {
                 high = current_price;
@@ -72,9 +81,9 @@ pub fn update_high_low(current_price: f64) {
                     .to_string();
             }
         }
-    } else {
-        changed = true; // First entry for today
     }
+
+    println!("🔍 Did data change? {}", changed);
 
     if changed {
         pruned.insert(today.clone(), json!({
@@ -91,7 +100,10 @@ pub fn update_high_low(current_price: f64) {
                 if let Err(err) = fs::write(FILE_PATH.as_str(), serialized) {
                     eprintln!("⚠️ Failed to write file to {}: {}", FILE_PATH.as_str(), err);
                 } else {
-                    eprintln!("Successfully updated high/low prices.")
+                    println!(
+                        "📈 Updating JSON: high = {}, low = {}, current = {}",
+                        high, low, current_price
+                    );
                 }
             }
             Err(e) => eprintln!("⚠️ Failed to serialize JSON: {}", e),

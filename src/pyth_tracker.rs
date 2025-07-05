@@ -22,11 +22,9 @@ pub async fn run_pyth_tracker() -> Result<(), Box<dyn std::error::Error>> {
         };
         let mut stream = client.stream();
         while let Some(event_result) = stream.next().await {
-            println!("📥 Event received");
             if let Ok(es::SSE::Event(event)) = event_result {
                 if let Ok(parsed) = serde_json::from_str::<Value>(&event.data) {
                     if let Some(adjusted_price) = extract_adjusted_price(&parsed) {
-                        println!("updating");
                         update_high_low(adjusted_price);
                     } else {
                         eprintln!("⚠ Failed to extract adjusted price from JSON: {:?}", parsed);
