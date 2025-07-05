@@ -3,22 +3,6 @@
 version = 4
 
 [[package]]
-name = "Sol_Trader_Server"
-version = "0.1.0"
-dependencies = [
- "aws-config",
- "aws-sdk-s3",
- "aws-types",
- "chrono",
- "dotenv",
- "eventsource-client",
- "futures-util",
- "once_cell",
- "serde_json",
- "tokio",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2285,6 +2269,22 @@ checksum = "e22376abed350d73dd1cd119b57ffccad95b4e585a7cda43e286245ce23c0678"
 dependencies = [
  "libc",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "solana-tracker"
+version = "0.1.0"
+dependencies = [
+ "aws-config",
+ "aws-sdk-s3",
+ "aws-types",
+ "chrono",
+ "dotenv",
+ "eventsource-client",
+ "futures-util",
+ "once_cell",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]

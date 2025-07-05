@@ -1,7 +1,11 @@
 [package]
-name = "Sol_Trader_Server"
+name = "solana-tracker"
 version = "0.1.0"
 edition = "2024"
+
+[[bin]]
+name = "solana-tracker"
+path = "src/main.rs"
 
 [dependencies]
 once_cell = "1.19"
