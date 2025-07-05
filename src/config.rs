@@ -8,18 +8,10 @@ pub static S3_STORE_MAX_DAYS: Lazy<i64> = Lazy::new(|| {
         .unwrap_or(90)
 });
 
-
 // Load env vars at runtime
-// pub static AWS_ACCESS_KEY_ID: Lazy<String> = Lazy::new(|| {
-//     env::var("AWS_ACCESS_KEY_ID").expect("Missing AWS_ACCESS_KEY_ID env var")
-// });
-// pub static AWS_SECRET_ACCESS_KEY: Lazy<String> = Lazy::new(|| {
-//     env::var("AWS_SECRET_ACCESS_KEY").expect("Missing AWS_ACCESS_KEY_ID env var")
-// });
-//
-// pub static AWS_REGION: Lazy<String> = Lazy::new(|| {
-//     env::var("AWS_REGION").unwrap_or_else(|_| "us-west-2".to_string())
-// });
+pub static AWS_REGION: Lazy<String> = Lazy::new(|| {
+    env::var("AWS_REGION").unwrap_or_else(|_| "us-west-1".to_string())
+});
 
 pub static SSE_URL: Lazy<String> = Lazy::new(|| {
     env::var("SSE_URL").expect("Missing SSE_URL env var")

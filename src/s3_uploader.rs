@@ -7,7 +7,7 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::Path;
 use aws_sdk_s3::primitives::ByteStream;
-use crate::config::{BUCKET_NAME, FILE_PATH, S3_STORE_MAX_DAYS};
+use crate::config::{BUCKET_NAME, FILE_PATH, S3_STORE_MAX_DAYS, AWS_REGION};
 
 //This runs right after midnight.
 //So we need to get yesterday's date data.
@@ -29,7 +29,7 @@ pub async fn update_s3_history() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     // Step 2: Download the current S3 history file
-    let region_provider = RegionProviderChain::default_provider().or_else(Region::new("us-west-1"));
+    let region_provider = RegionProviderChain::default_provider().or_else(Region::new(AWS_REGION.as_str()));
     let config = aws_config::defaults(aws_config::BehaviorVersion::latest())
         .region(region_provider)
         .load()
