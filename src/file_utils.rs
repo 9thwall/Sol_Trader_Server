@@ -90,6 +90,8 @@ pub fn update_high_low(current_price: f64) {
             Ok(serialized) => {
                 if let Err(err) = fs::write(FILE_PATH.as_str(), serialized) {
                     eprintln!("⚠️ Failed to write file to {}: {}", FILE_PATH.as_str(), err);
+                } else {
+                    eprintln!("Successfully updated high/low prices.")
                 }
             }
             Err(e) => eprintln!("⚠️ Failed to serialize JSON: {}", e),
