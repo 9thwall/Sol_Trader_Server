@@ -70,9 +70,7 @@ pub fn update_high_low(current_price: f64) {
         match serde_json::to_string_pretty(&Value::Object(pruned.into_iter().collect())) {
             Ok(serialized) => {
                 if let Err(err) = fs::write(FILE_PATH.as_str(), serialized) {
-
                     println!("{}", FILE_PATH.as_str());
-
                     eprintln!("⚠️ Failed to write file: {}", err);
                 }
             }
