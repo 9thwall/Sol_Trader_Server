@@ -11,7 +11,7 @@ pub static SSE_URL: Lazy<String> = Lazy::new(|| {
 });
 
 pub async fn run_pyth_tracker() -> Result<(), Box<dyn std::error::Error>> {
-    println!("SSE_URL: {}", SSE_URL.as_str());
+    //println!("SSE_URL: {}", SSE_URL.as_str());
     loop {
         let client = match es::ClientBuilder::for_url(SSE_URL.as_str()) {
             Ok(builder) => builder.build(),
