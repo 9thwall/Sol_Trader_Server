@@ -10,7 +10,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         println!("✅ Loaded .env file from: {}", env_path);
     }
-    //dotenv::from_path("/etc/solana-tracker/.env").ok();
     pyth_tracker::run_pyth_tracker().await?;
     Ok(())
 }
