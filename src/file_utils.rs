@@ -17,8 +17,8 @@ pub fn update_high_low(current_price: f64) {
     let mut low_time = now_str.clone();
 
 
-    println!("💰 Current price: {}", current_price);
-    println!("📅 Today: {}", today);
+    //println!("💰 Current price: {}", current_price);
+    //println!("📅 Today: {}", today);
 
     // Load existing JSON if the file exists
     let data = if Path::new(FILE_PATH.as_str()).exists() {
@@ -83,7 +83,7 @@ pub fn update_high_low(current_price: f64) {
         }
     }
 
-    println!("🔍 Did data change? {}", changed);
+    //println!("🔍 Did data change? {}", changed);
 
     if changed {
         pruned.insert(today.clone(), json!({
