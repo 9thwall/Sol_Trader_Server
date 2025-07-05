@@ -53,8 +53,8 @@ async fn update_s3_history() -> Result<(), Box<dyn std::error::Error>> {
     let local_content = fs::read_to_string(FILE_PATH.as_str())?;
     let local_json: Value = serde_json::from_str(&local_content)?;
 
-    let yesterday = Utc::now().format("%Y-%m-%d").to_string();
-    //let yesterday = (Utc::now() - Duration::days(1)).format("%Y-%m-%d").to_string();
+    //let yesterday = Utc::now().format("%Y-%m-%d").to_string();
+    let yesterday = (Utc::now() - Duration::days(1)).format("%Y-%m-%d").to_string();
 
     //Getting yesterday data because this will run after midnight!
     let Some(yesterday_data) = local_json.get(&yesterday) else {
