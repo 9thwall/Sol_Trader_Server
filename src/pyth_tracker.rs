@@ -11,10 +11,18 @@ pub static SSE_URL: Lazy<String> = Lazy::new(|| {
 });
 
 pub async fn run_pyth_tracker() -> Result<(), Box<dyn std::error::Error>> {
+    println!("SSE_URL: {}", SSE_URL.as_str());
     loop {
-        let client = es::ClientBuilder::for_url(SSE_URL.as_str())?.build();
+        let client = match es::ClientBuilder::for_url(SSE_URL.as_str()) {
+            Ok(builder) => builder.build(),
+            Err(e) => {
+                eprintln!("❌ Failed to build SSE client: {e}");
+                return Err(Box::new(e));
+            }
+        };
         let mut stream = client.stream();
         while let Some(event_result) = stream.next().await {
+            println!("📥 Event received");
             if let Ok(es::SSE::Event(event)) = event_result {
                 if let Ok(parsed) = serde_json::from_str::<Value>(&event.data) {
                     if let Some(adjusted_price) = extract_adjusted_price(&parsed) {
